@@ -1,9 +1,25 @@
 // import { css }  from '@emotion/react';
-import styled, { css } from 'styled-components';
-import { useEffect, useState } from "react";
 import "./App.css";
+import styled from 'styled-components';
+import {  useEffect, useState } from "react";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Spinner } from 'react-bootstrap';
+import Header from './component/Header/Header';
+import Footer from './component/Footer/Footer';
+// import { createGlobalStyle} from "styled-components";
+// import reset from "styled-reset";
 
-// 20:00
+// const GlobalStyle = createGlobalStyle`
+//   ${reset}
+//   /* other styles */
+//   *, *::after, *::before {
+//     box-sizing: border-box;
+//     -moz-osx-font-smoothing: grayscale;
+//     -webkit-font-smoothing: antialiased;
+//     font-smoothing: antialiased;
+//   }
+// `;
+
 
 function App() {
   var [rangeVals, setRangeVals] = useState('500');
@@ -12,32 +28,62 @@ function App() {
   var [rangeVals04, setRangeVals04] = useState('333333');
   var [rangeVals05, setRangeVals05] = useState('テキストを変更しよう');
 
+  var [submitText03, setSubmitText03] = useState('00ff7f');
+  var [submitText04, setSubmitText04] = useState('333333');
+
+  const [loading, setLoading] = useState(true);
+
+
+const regex =  /^[0-9a-zA-Z]+$/;
+
   const handleChange = (e) => {
     const rangeVal = e.target.value;
     setRangeVals(rangeVal);
+
   }
+
+
   
   const handleChange02 = (e) => {
     const rangeVal02 = e.target.value;
     setRangeVals02(rangeVal02);
   }
 
-  const handleChange03 = (e) => {
+  const handleEnter03 =  (e) => {
+    if(e.key === "Enter"){
     const rangeVal03 = e.target.value;
     if(rangeVal03.length > 6){
       return;
     }
-    setRangeVals03(rangeVal03);
-  }
+    setLoading(false);
 
-  const handleChange04 = (e) => {
+    setTimeout(function(){
+      setLoading(true);
+      setSubmitText03(rangeVals03);
+    },500);
+
+      
+    // setRangeVals03(rangeVal03);
+    }
+
+  }
+  
+  const handleEnter04 = (e) => {
+    if(e.key === "Enter"){
     const rangeVal04 = e.target.value;
     if(rangeVal04.length > 6){
       return;
     }
-    setRangeVals04(rangeVal04);
-  }
+    setLoading(false);
 
+    setTimeout(function(){
+      setLoading(true);
+      setSubmitText04(rangeVals04);
+    },500);
+  }
+}
+  
+  
   const handleChange05 = (e) => {
     const rangeVal05 = e.target.value;
     if(rangeVal05.length > 30){
@@ -45,38 +91,46 @@ function App() {
     }
     setRangeVals05(rangeVal05);
   }
+
+  const hanldeSubmit = (e) => {
+    e.preventDefault();
+
+    if(rangeVals03.length < 6 || rangeVals04.length < 6){
+      alert('文字コードは6文字です。');
+      return;
+    } else if(!regex.test(rangeVals03) || !regex.test(rangeVals04) ){
+      alert('半角英数字で書きましょう');
+      return;
+
+    }
+    
+
+  }
+
   
   const Box = styled.div`
   width:${rangeVals}px;
   height:${rangeVals02}px;
-  background-color: #${rangeVals03};
+  background-color: #${submitText03};
   display: flex;
   align-items: center;
   justify-content:center;
   `
   const BoxText = styled.p`
   font-size: 16px;
-  color: #${rangeVals04};
+  color: #${submitText04};
   `
+  
 
-  // loadingのStateがTrueのときに表示するコンテンツ
-function Content() {
-  return (
-    <h1>Hello World!!</h1>
-  )
-}
 
-// loadingのStateがFalseのときに表示するコンテンツ
-function Spinner() {
-  return (
-    <div className="sk-plane sk-center"></div>
-  )
-}
 
   return (
 
-    <>
-    <section className="jsArea">
+<>
+{/* <GlobalStyle /> */}
+<Header/>
+
+<section className="jsArea">
 
     
 <div className="inputArea">
@@ -86,19 +140,26 @@ function Spinner() {
   <div>
     Height:<input type="range" name="height" onChange={(e)=> handleChange02(e)} className="rangeHeight" min='0' max='500' value={rangeVals02}/>  <span className="rangeNo">{rangeVals02}</span>px<br/>
   </div>
+  <form onSubmit={(e) => hanldeSubmit(e)}>
   <div>
-    背景色（16進）:#<input type="text" className="rangeBgColor" onInput={(e)=> handleChange03(e)}  value={rangeVals03}/> (enterで変更されます)
+    背景色（16進）:#<input type="text" className="rangeBgColor" onChange={(e)=> setRangeVals03(e.target.value)} onKeyDown={handleEnter03}  value={rangeVals03}/> (enterで変更されます)
   </div>
   <div>
-    文字の色（16進）:#<input type="text" className="rangeTextColor" onInput={(e)=> handleChange04(e)}  value={rangeVals04}/> (enterで変更されます)
+    文字の色（16進）:#<input type="text" className="rangeTextColor" onChange={(e)=> setRangeVals04(e.target.value)} onKeyDown={handleEnter04} value={rangeVals04}/> (enterで変更されます)
   </div>
+  <input type="submit" className='hidden' value="" />
+
+  </form>
   <div>
     テキスト（30字以内）:<br/><br/><textarea className="rangeText" onInput={(e)=> handleChange05(e)}  value={rangeVals05}></textarea>
   </div>
 </div>
 
 
-<div>
+<div className='preview_area'>
+  <div className='spinner_box'>
+  { loading ? null : <Spinner className='js-spinner' animation='border'/> }
+  </div>
   <Box>
     <BoxText>
         {rangeVals05}
@@ -117,7 +178,7 @@ function Spinner() {
 
         &lt;div className="box"&gt;<br/>
         &lt;p className="innerText"&gt;<br/>
-          <span className="previewHtmlText">テキストを変更しよう</span><br/>
+          <span className="previewHtmlText">{rangeVals05}</span><br/>
         &lt;/p&gt;<br/>
         &lt;/div&gt;<br/>
 
@@ -132,7 +193,7 @@ function Spinner() {
         .box{'{'}<br/>
           width: {rangeVals}px;<br/>
           height: {rangeVals02}px;<br/>
-          background-color: #{rangeVals03};<br/>
+          background-color: #{submitText03};<br/>
           display: flex;<br/>
           align-items: center;<br/>
           justify-content:center;<br/>
@@ -141,14 +202,16 @@ function Spinner() {
           <br/>
         .box .innerText{'{'}<br/>
           font-size: 16px;<br/>
-          color: #{rangeVals04};<br/>
+          color: #{submitText04};<br/>
           {'}'}<br/>
 
       </div>
     </div>
 </section>
 
-    </>
+
+<Footer/>
+</>
     
     );
 }
