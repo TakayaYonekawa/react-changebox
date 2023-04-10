@@ -6,19 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Spinner } from 'react-bootstrap';
 import Header from './component/Header/Header';
 import Footer from './component/Footer/Footer';
-// import { createGlobalStyle} from "styled-components";
-// import reset from "styled-reset";
 
-// const GlobalStyle = createGlobalStyle`
-//   ${reset}
-//   /* other styles */
-//   *, *::after, *::before {
-//     box-sizing: border-box;
-//     -moz-osx-font-smoothing: grayscale;
-//     -webkit-font-smoothing: antialiased;
-//     font-smoothing: antialiased;
-//   }
-// `;
 
 
 function App() {
@@ -216,6 +204,5 @@ const regex =  /^[0-9a-zA-Z]+$/;
     );
 }
 
-// https://tarovlog.com/2021/03/09/react-page-loading/
 
 export default App;
