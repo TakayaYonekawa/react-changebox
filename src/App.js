@@ -1,8 +1,8 @@
-// import { css }  from '@emotion/react';
 import "./App.css";
 import styled from 'styled-components';
 import {  useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './assets/scss/style.scss'
 import { Spinner } from 'react-bootstrap';
 import Header from './component/templates/Header/Header';
 import Footer from './component/templates/Footer/Footer';
