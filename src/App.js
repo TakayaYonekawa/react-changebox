@@ -1,11 +1,11 @@
 // import { css }  from '@emotion/react';
 import "./App.css";
 import styled from 'styled-components';
-import {  useEffect, useState } from "react";
+import {  useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Spinner } from 'react-bootstrap';
-import Header from './component/Header/Header';
-import Footer from './component/Footer/Footer';
+import Header from './component/templates/Header/Header';
+import Footer from './component/templates/Footer/Footer';
 
 
 
